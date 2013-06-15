@@ -1,44 +1,24 @@
 <%- model_class = Message -%>
-<div class="page-header">
-  <!-- <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1> -->
-  <h1><%= @message.notice_date %>まであと...</h1>
+<div id="page-header">
+   <h3><%= @message.notice_date %>まであと...</h3>
 </div>
-
 <div id="container">
-
-  <!-- <h1>TIME CAPSULE</h1>
-  <h2 class="subtitle">COUNT DOWN!!</h2> -->
-
-  <!-- Countdown dashboard start -->
   <div id="countdown_dashboard">
     <div class="dash seconds_dash">
       <span class="dash_title">seconds</span>
       <div class="digit">1</div>
       <div class="digit">0</div>
     </div>
-
+  </div>
+</div>
+<div id="timecupsule" style="display:none;">
+  <div class="row">
+    <div class="span6">
+      <blockquote>
+        <p><h2><%= @message.content %></h2></p>
+        <small><%= @message.notice_date %>ツイート <cite>https://twitter.com//cite></small>
+      </blockquote>
+      </div>
   </div>
 </div>
 
-<div id="timecupsule" >
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:content) %>:</strong></dt>
-  <dd><%= @message.content %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:notice_date) %>:</strong></dt>
-  <dd><%= @message.notice_date %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:noticed) %>:</strong></dt>
-  <dd><%= @message.noticed %></dd>
-</dl>
-</div>
-
-<div class="form-actions">
-  <%= link_to t('.back', :default => t("helpers.links.back")),
-              messages_path, :class => 'btn'  %>
-  <%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_message_path(@message), :class => 'btn' %>
-  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              message_path(@message),
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger' %>
-</div>

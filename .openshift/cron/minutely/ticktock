@@ -1,0 +1,4 @@
+#!/bin/bash
+
+date >> ${OPENSHIFT_RUBY_LOG_DIR}/ticktock.log
+

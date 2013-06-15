@@ -102,13 +102,13 @@ class MessagesController < ApplicationController
       config.oauth_token_secret = 'TlvxDGu1FuVvJiiGuw0JYdyA6NAwK24WUgs7A7zrSo'
     end
 
-    Twitter.update("TEST5です。")
+    Twitter.update( DateTime.now.strftime("%Y年%m月%d日 %H:%M:%S") + "\r\n" + "TESTです。" )
 
     Twitter.configure do |config|
       config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
       config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
       config.oauth_token = User.where(:name => 'fukudevlove').first.access_token
-      config.oauth_token_secret = User.where(:name => 'fukudevlove').access_secret
+      config.oauth_token_secret = User.where(:name => 'fukudevlove').first.access_secret
     end
 
   end

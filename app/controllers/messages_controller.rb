@@ -43,6 +43,7 @@ class MessagesController < ApplicationController
   # POST /messages.json
   def create
     @message = Message.new(params[:message])
+    @message.user_id = current_user.id
 
     respond_to do |format|
       if @message.save
@@ -84,8 +85,10 @@ class MessagesController < ApplicationController
   end
 
   def notice
-    @messages = []
+    @messages = Message.unsent_search   
+
     tweet
+    
     respond_to do |format|
       format.html { render action: "index" }
     end
@@ -100,26 +103,6 @@ class MessagesController < ApplicationController
 
   private
 
-  def tweet
-
-    Twitter.configure do |config|
-      config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
-      config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
-      config.oauth_token = '1518978194-olqwtfG285noLBpq60Vp4S3AhD2CFkJ6fQ1Y3Ow'
-      config.oauth_token_secret = 'TlvxDGu1FuVvJiiGuw0JYdyA6NAwK24WUgs7A7zrSo'
-    end
-
-    Twitter.update( DateTime.now.strftime("%Y年%m月%d日 %H:%M:%S") + "\r\n" + "TESTです。" )
-
-    Twitter.configure do |config|
-      config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
-      config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
-      config.oauth_token = User.where(:name => 'Anvil8789').first.access_token
-      config.oauth_token_secret = User.where(:name => 'Anvil8789').first.access_secret
-    end
-
-  end
-
   def tweet_pull
 
     Twitter.configure do |config|
@@ -131,10 +114,11 @@ class MessagesController < ApplicationController
 
     users = User.where(:name => 'Anvil8789')
     users.each do |user|
-      options = {"count" => 10}
-      Twitter.user_timeline( user.name, {} ).each do |res|
-        Message.create( :user_id => user.id, :content => res.text, :notice_date => DateTime.now, :noticed => true )
-        break
+      options = {"since_id" => 1, "include_entities" => true}
+      Twitter.user_timeline( user.name, options ).each do |res|
+        # puts res.inspect
+        # Message.create( :user_id => user.id, :content => res.text, :notice_date => DateTime.now, :noticed => true )
+        # break
       end
     end
 

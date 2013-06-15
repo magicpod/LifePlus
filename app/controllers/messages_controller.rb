@@ -155,12 +155,13 @@ class MessagesController < ApplicationController
       maxTweet_id = Message.maxTweet_id(user.id)
  
       options = {"since_id" => maxTweet_id.to_s, "include_entities" => true}
-      puts options.inspect
-      puts user.inspect
+      Rails.logger.info( options.inspect )
+      Rails.logger.info( user.id.inspect )
+      Rails.logger.info( user.name.inspect )
       Twitter.user_timeline( user.name, options ).each do |res|
-        puts res.text
+        Rails.logger.info( res.id.inspect )
         if res.text =~ /#lp24c/ then
-          puts 'タイムカプセルを登録'
+          Rails.logger.info( 'タイムカプセルを登録' )
           Message.create( :user_id => user.id, :tweet_id => res.id, :content => res.text, :notice_date => DateTime.now + 1.minutes, :noticed => false )
         end
       end

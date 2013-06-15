@@ -8,6 +8,9 @@ gem 'rack', '~> 1.4.5'
 
 gem 'sqlite3'
 
+gem 'devise'
+gem 'omniauth-twitter'
+
 group :production do
   gem 'mysql2'
 end

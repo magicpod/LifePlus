@@ -132,26 +132,33 @@ class MessagesController < ApplicationController
 
   def tweet_pull
 
-    Twitter.configure do |config|
-      config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
-      config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
-      config.oauth_token = '1518978194-olqwtfG285noLBpq60Vp4S3AhD2CFkJ6fQ1Y3Ow'
-      config.oauth_token_secret = 'TlvxDGu1FuVvJiiGuw0JYdyA6NAwK24WUgs7A7zrSo'
-    end
+    # Twitter.configure do |config|
+    #   config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
+    #   config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
+    #   config.oauth_token = '1518978194-olqwtfG285noLBpq60Vp4S3AhD2CFkJ6fQ1Y3Ow'
+    #   config.oauth_token_secret = 'TlvxDGu1FuVvJiiGuw0JYdyA6NAwK24WUgs7A7zrSo'
+    # end
 
     users = User.all
-      users.each do |user|
+    users.each do |user|
+
+      Twitter.configure do |config|
+        config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
+        config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
+        config.oauth_token = user.access_token
+        config.oauth_token_secret = user.access_secret
+      end
 
       maxTweet_id = Message.maxTweet_id(user.id)
 
-      options = {"since_id" => maxTweet_id, "include_entities" => true}
+      options = {"since_id" => maxTweet_id.to_s, "include_entities" => true}
+      puts options.inspect
+      puts user.inspect
       Twitter.user_timeline( user.name, options ).each do |res|
         puts res.text
-
         if res.text =~ /#lp24c/ then
           puts 'タイムカプセルを登録'
-          Message.create( :user_id => user.id, :content => res.text, :notice_date => DateTime.now + 1.minutes, :noticed => true )
-          break
+          Message.create( :user_id => user.id, :tweet_id => res.id, :content => res.text, :notice_date => DateTime.now + 1.minutes, :noticed => true )
         end
       end
     end

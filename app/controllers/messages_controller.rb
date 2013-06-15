@@ -107,8 +107,8 @@ class MessagesController < ApplicationController
     Twitter.configure do |config|
       config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
       config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
-      config.oauth_token = User.find(:first).access_token
-      config.oauth_token_secret = User.find(:first).access_secret
+      config.oauth_token = User.where(:name => 'fukudevlove').first.access_token
+      config.oauth_token_secret = User.where(:name => 'fukudevlove').access_secret
     end
 
   end

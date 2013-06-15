@@ -1,9 +1,26 @@
-<h1>タイムカプセル通知（TEST）</h1>
-<%= link_to "twitterでログイン", user_omniauth_authorize_path(:twitter) %>
-
-
-<p><%= link_to 'Pull Tweet', pull_messages_path ,{} ,{:class => "btn btn-large"} %>
-<p><%= link_to 'Push Tweet', notice_messages_path %></p>
-
-
-
+<div class="container">
+	<div class="hero-unit">
+	  <h1>ようこそLifePlusへ。</h1>
+	  <br>
+	  <p>あなたの大切な思い出は我々が大切に保管します。<br>そして未来のあなたへお返しします。</p>
+	</div>
+	<div class="row">
+		<h3>ご利用いただくための3ステップ</h3>
+	    <div class="row">
+	        <div class="span4">
+		        <h3>1.twitter認証</h3>
+			    <p>本サービスをご使用いただくためには、twitterに対してLifePlusが連携することを、許可していただく必要があります。</p>
+			    <p><a class="btn btn-primary btn-large" href="<%=user_omniauth_authorize_path(:twitter)%>"> twitterで許可する&raquo;</a></p>
+		    </div>
+	        <div class="span4">
+	          <h3>2.思い出を呟きに</h3>
+	          <p>未来の自分に伝えたい出来事や、思い出ができたら、ハッシュタグ「<strong>#lp24c</strong>」をつけてツイートしましょう。</p>
+	    	</div>
+	        <div class="span4">
+	          <h3>3.タイムカプセルを開きましょう</h3>
+	          <p>過去のあなたから未来のあなたへタイムボックス開封のお誘いツイートが届きます。開封方法はツイートに記してあります。</p>
+	        </div>
+	      </div>
+	  </div>
+	</div>
+</div>

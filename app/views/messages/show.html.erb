@@ -1,8 +1,26 @@
 <%- model_class = Message -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+  <!-- <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1> -->
+  <h1><%= @message.notice_date %>まであと...</h1>
 </div>
 
+<div id="container">
+
+  <!-- <h1>TIME CAPSULE</h1>
+  <h2 class="subtitle">COUNT DOWN!!</h2> -->
+
+  <!-- Countdown dashboard start -->
+  <div id="countdown_dashboard">
+    <div class="dash seconds_dash">
+      <span class="dash_title">seconds</span>
+      <div class="digit">1</div>
+      <div class="digit">0</div>
+    </div>
+
+  </div>
+</div>
+
+<div id="timecupsule" >
 <dl class="dl-horizontal">
   <dt><strong><%= model_class.human_attribute_name(:content) %>:</strong></dt>
   <dd><%= @message.content %></dd>
@@ -11,6 +29,7 @@
   <dt><strong><%= model_class.human_attribute_name(:noticed) %>:</strong></dt>
   <dd><%= @message.noticed %></dd>
 </dl>
+</div>
 
 <div class="form-actions">
   <%= link_to t('.back', :default => t("helpers.links.back")),

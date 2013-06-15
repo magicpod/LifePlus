@@ -114,8 +114,8 @@ class MessagesController < ApplicationController
     Twitter.configure do |config|
       config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
       config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
-      config.oauth_token = User.where(:name => 'fukudevlove').first.access_token
-      config.oauth_token_secret = User.where(:name => 'fukudevlove').first.access_secret
+      config.oauth_token = User.where(:name => 'Anvil8789').first.access_token
+      config.oauth_token_secret = User.where(:name => 'Anvil8789').first.access_secret
     end
 
   end
@@ -129,7 +129,7 @@ class MessagesController < ApplicationController
       config.oauth_token_secret = 'TlvxDGu1FuVvJiiGuw0JYdyA6NAwK24WUgs7A7zrSo'
     end
 
-    users = User.where(:name => 'fukudevlove')
+    users = User.where(:name => 'Anvil8789')
     users.each do |user|
       options = {"count" => 10}
       Twitter.user_timeline( user.name, {} ).each do |res|

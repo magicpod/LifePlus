@@ -43,6 +43,7 @@ class MessagesController < ApplicationController
   # POST /messages.json
   def create
     @message = Message.new(params[:message])
+    @message.user_id = current_user.id
 
     respond_to do |format|
       if @message.save
@@ -84,8 +85,10 @@ class MessagesController < ApplicationController
   end
 
   def notice
-    @messages = []
+    @messages = Message.unsent_search   
+
     tweet
+    
     respond_to do |format|
       format.html { render action: "index" }
     end
@@ -115,6 +118,9 @@ class MessagesController < ApplicationController
       content << "\r\n"
       content << "タイムカプセルを掘り起こす時が来ました。"
       Twitter.direct_message_create( message.user.name, content )
+
+      message.noticed = true
+      message.save(message)
 
     end
 

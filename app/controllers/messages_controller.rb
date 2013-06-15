@@ -124,7 +124,7 @@ class MessagesController < ApplicationController
       Twitter.direct_message_create( message.user.name, content )
 
       message.noticed = true
-      message.save(message)
+      message.save
 
     end
 
@@ -162,7 +162,7 @@ class MessagesController < ApplicationController
         Rails.logger.info( res.id.inspect )
         if res.text =~ /#lp24c/ then
           Rails.logger.info( 'タイムカプセルを登録' )
-          Message.create( :user_id => user.id, :tweet_id => res.id, :content => res.text, :notice_date => DateTime.now + 1.minutes, :noticed => false )
+          Message.create( :user_id => user.id, :tweet_id => res.id, :content => res.text, :notice_date => DateTime.now, :noticed => false )
         end
       end
     end

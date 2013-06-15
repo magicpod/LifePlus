@@ -91,6 +91,13 @@ class MessagesController < ApplicationController
     end
   end
 
+  def pull
+    tweet_pull
+    respond_to do |format|
+      format.html { render action: "index" }
+    end
+  end
+
   private
 
   def tweet
@@ -110,6 +117,28 @@ class MessagesController < ApplicationController
       config.oauth_token = User.where(:name => 'fukudevlove').first.access_token
       config.oauth_token_secret = User.where(:name => 'fukudevlove').first.access_secret
     end
+
+  end
+
+  def tweet_pull
+
+    Twitter.configure do |config|
+      config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
+      config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
+      config.oauth_token = '1518978194-olqwtfG285noLBpq60Vp4S3AhD2CFkJ6fQ1Y3Ow'
+      config.oauth_token_secret = 'TlvxDGu1FuVvJiiGuw0JYdyA6NAwK24WUgs7A7zrSo'
+    end
+
+    users = User.where(:name => 'fukudevlove')
+    users.each do |user|
+      options = {"count" => 10}
+      Twitter.user_timeline( user.name, {} ).each do |res|
+        Message.create( :user_id => user.id, :content => res.text, :notice_date => DateTime.now, :noticed => true )
+        break
+      end
+    end
+
+    @messages = Message.all
 
   end
 

@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
   # # attr_accessible :title, :body
   attr_accessible :name, :password, :uid, :provider, :access_token, :access_secret
 
+  has_many :messages
+
   def self.new_with_session(params, session)
     super.tap do |user|
       if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]

@@ -106,20 +106,25 @@ class MessagesController < ApplicationController
 
   def tweet
 
-    Twitter.configure do |config|
-      config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
-      config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
-      config.oauth_token = '1518978194-olqwtfG285noLBpq60Vp4S3AhD2CFkJ6fQ1Y3Ow'
-      config.oauth_token_secret = 'TlvxDGu1FuVvJiiGuw0JYdyA6NAwK24WUgs7A7zrSo'
-    end
+    @messages.each do |message|
+      Twitter.configure do |config|
+        config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
+        config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
+        config.oauth_token = '1518978194-olqwtfG285noLBpq60Vp4S3AhD2CFkJ6fQ1Y3Ow'
+        config.oauth_token_secret = 'TlvxDGu1FuVvJiiGuw0JYdyA6NAwK24WUgs7A7zrSo'
+      end
 
-    Twitter.update( DateTime.now.strftime("%Y年%m月%d日 %H:%M:%S") + "\r\n" + "TESTです。" )
+      content = message.created_at.strftime("%Y年%m月%d日 %H:%M:%S")
+      content << "\r\n"
+      content << "タイムカプセルを掘り起こす時が来ました。"
+      Twitter.update( content )
 
-    Twitter.configure do |config|
-      config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
-      config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
-      config.oauth_token = User.where(:name => 'fukudevlove').first.access_token
-      config.oauth_token_secret = User.where(:name => 'fukudevlove').first.access_secret
+      Twitter.configure do |config|
+        config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
+        config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
+        config.oauth_token = message.user.access_token
+        config.oauth_token_secret = message.user.access_secret
+      end
     end
 
   end
@@ -135,10 +140,11 @@ class MessagesController < ApplicationController
 
     users = User.where(:name => 'fukudevlove')
     users.each do |user|
-      options = {"count" => 10}
-      Twitter.user_timeline( user.name, {} ).each do |res|
-        Message.create( :user_id => user.id, :content => res.text, :notice_date => DateTime.now, :noticed => true )
-        break
+      options = {"since_id" => 1, "include_entities" => true}
+      Twitter.user_timeline( user.name, options ).each do |res|
+        # puts res.inspect
+        # Message.create( :user_id => user.id, :content => res.text, :notice_date => DateTime.now, :noticed => true )
+        # break
       end
     end
 

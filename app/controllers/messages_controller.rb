@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 # coding: utf-8
 
 class MessagesController < ApplicationController
@@ -108,25 +106,25 @@ class MessagesController < ApplicationController
   def tweet
 
     @messages.each do |message|
-      Twitter.configure do |config|
-        config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
-        config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
-        config.oauth_token = '1518978194-olqwtfG285noLBpq60Vp4S3AhD2CFkJ6fQ1Y3Ow'
-        config.oauth_token_secret = 'TlvxDGu1FuVvJiiGuw0JYdyA6NAwK24WUgs7A7zrSo'
-      end
+      # Twitter.configure do |config|
+      #   config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
+      #   config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
+      #   config.oauth_token = '1518978194-olqwtfG285noLBpq60Vp4S3AhD2CFkJ6fQ1Y3Ow'
+      #   config.oauth_token_secret = 'TlvxDGu1FuVvJiiGuw0JYdyA6NAwK24WUgs7A7zrSo'
+      # end
 
-      content = message.created_at.strftime("%Y年%m月%d日 %H:%M:%S")
-      content << "\r\n"
-      content << "タイムカプセルを掘り起こす時が来ました。"
+      # content = message.created_at.strftime("%Y年%m月%d日 %H:%M:%S")
+      # content << "\r\n"
+      # content << "タイムカプセルを掘り起こす時が来ました。"
 
-      Twitter.direct_message_create(message.user.uid, content )
+      # Twitter.direct_message_create(message.user.uid, content, :page => 2 )
 
-      Twitter.configure do |config|
-        config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
-        config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
-        config.oauth_token = message.user.access_token
-        config.oauth_token_secret = message.user.access_secret
-      end
+      # Twitter.configure do |config|
+      #   config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
+      #   config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
+      #   config.oauth_token = message.user.access_token
+      #   config.oauth_token_secret = message.user.access_secret
+      # end
 
       message.noticed = true
       message.save(message)

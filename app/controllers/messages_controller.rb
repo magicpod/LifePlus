@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 # coding: utf-8
 
 class MessagesController < ApplicationController
@@ -114,9 +116,11 @@ class MessagesController < ApplicationController
         config.oauth_token_secret = message.user.access_secret
       end
 
-      content = message.created_at.now.strftime("%Y年%m月%d日 %H:%M:%S")
+      content = message.created_at.strftime("%Y年%m月%d日 %H:%M:%S")
       content << "\r\n"
       content << "タイムカプセルを掘り起こす時が来ました。"
+      content << "\r\n"
+      content << url_for( message_url(message.id) )
       Twitter.direct_message_create( message.user.name, content )
 
       message.noticed = true
@@ -128,20 +132,34 @@ class MessagesController < ApplicationController
 
   def tweet_pull
 
-    Twitter.configure do |config|
-      config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
-      config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
-      config.oauth_token = '1518978194-olqwtfG285noLBpq60Vp4S3AhD2CFkJ6fQ1Y3Ow'
-      config.oauth_token_secret = 'TlvxDGu1FuVvJiiGuw0JYdyA6NAwK24WUgs7A7zrSo'
-    end
+    # Twitter.configure do |config|
+    #   config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
+    #   config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
+    #   config.oauth_token = '1518978194-olqwtfG285noLBpq60Vp4S3AhD2CFkJ6fQ1Y3Ow'
+    #   config.oauth_token_secret = 'TlvxDGu1FuVvJiiGuw0JYdyA6NAwK24WUgs7A7zrSo'
+    # end
 
-    users = User.where(:name => 'Anvil8789')
+    users = User.all
     users.each do |user|
-      options = {"since_id" => 1, "include_entities" => true}
+
+      Twitter.configure do |config|
+        config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
+        config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
+        config.oauth_token = user.access_token
+        config.oauth_token_secret = user.access_secret
+      end
+
+      maxTweet_id = Message.maxTweet_id(user.id)
+
+      options = {"since_id" => maxTweet_id.to_s, "include_entities" => true}
+      puts options.inspect
+      puts user.inspect
       Twitter.user_timeline( user.name, options ).each do |res|
-        # puts res.text
-        # Message.create( :user_id => user.id, :content => res.text, :notice_date => DateTime.now, :noticed => true )
-        # break
+        puts res.text
+        if res.text =~ /#lp24c/ then
+          puts 'タイムカプセルを登録'
+          Message.create( :user_id => user.id, :tweet_id => res.id, :content => res.text, :notice_date => DateTime.now + 1.minutes, :noticed => true )
+        end
       end
     end
 

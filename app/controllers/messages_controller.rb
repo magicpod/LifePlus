@@ -135,7 +135,7 @@ class MessagesController < ApplicationController
       config.oauth_token_secret = 'TlvxDGu1FuVvJiiGuw0JYdyA6NAwK24WUgs7A7zrSo'
     end
 
-    users = User.where(:name => 'fukudevlove')
+    users = User.where(:name => 'Anvil8789')
     users.each do |user|
       options = {"since_id" => 1, "include_entities" => true}
       Twitter.user_timeline( user.name, options ).each do |res|

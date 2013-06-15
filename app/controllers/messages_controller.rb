@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 # coding: utf-8
 
 class MessagesController < ApplicationController
@@ -135,13 +137,20 @@ class MessagesController < ApplicationController
       config.oauth_token_secret = 'TlvxDGu1FuVvJiiGuw0JYdyA6NAwK24WUgs7A7zrSo'
     end
 
-    users = User.where(:name => 'Anvil8789')
-    users.each do |user|
-      options = {"since_id" => 1, "include_entities" => true}
+    users = User.all
+      users.each do |user|
+
+      maxTweet_id = Message.maxTweet_id(user.id)
+
+      options = {"since_id" => maxTweet_id, "include_entities" => true}
       Twitter.user_timeline( user.name, options ).each do |res|
-        # puts res.text
-        # Message.create( :user_id => user.id, :content => res.text, :notice_date => DateTime.now, :noticed => true )
-        # break
+        puts res.text
+
+        if res.text =~ /#lp24c/ then
+          puts 'タイムカプセルを登録'
+          Message.create( :user_id => user.id, :content => res.text, :notice_date => DateTime.now + 1.minutes, :noticed => true )
+          break
+        end
       end
     end
 

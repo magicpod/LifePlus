@@ -3,5 +3,11 @@ class Message < ActiveRecord::Base
   belongs_to :user
   
   scope :unsent_search, where('notice_date < ? and noticed = ?', DateTime.now , false)
+
+
+  def self.maxTweet_id (user_id)
+  	message = Message.where(:user_id => user_id).order('tweet_id desc').first
+  	message.tweet_id || 1
+  end
   
 end

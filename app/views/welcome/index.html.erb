@@ -1,4 +1,9 @@
 <h1>タイムカプセル通知（TEST）</h1>
-<p><%= link_to "twitterでログイン", user_omniauth_authorize_path(:twitter)  %></p>
-<p><%= link_to 'Pull Tweet', pull_messages_path %></p>
+<%= link_to "twitterでログイン", user_omniauth_authorize_path(:twitter) %>
+
+
+<p><%= link_to 'Pull Tweet', pull_messages_path ,{} ,{:class => "btn btn-large"} %>
 <p><%= link_to 'Push Tweet', notice_messages_path %></p>
+
+
+

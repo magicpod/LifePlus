@@ -7,7 +7,10 @@ class Message < ActiveRecord::Base
 
   def self.maxTweet_id (user_id)
   	message = Message.where(:user_id => user_id).order('tweet_id desc').first
-  	message.tweet_id || 1
+
+  	return 1 unless message
+  	return message.tweet_id + 1 if message.noticed
+  	message.tweet_id
   end
   
 end

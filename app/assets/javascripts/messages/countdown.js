@@ -1,4 +1,5 @@
 jQuery(document).ready(function() {
+    $("#timecupsule").hide();
     $('#countdown_dashboard').countDown({
         targetOffset: {
            'day':      0,
@@ -36,16 +37,19 @@ jQuery(document).ready(function() {
     });
     $('#countdown_dashboard').startCountDown();
 
-    setTimeout("fadeoutCountdown()", 8*1000);
+    setTimeout("fadeoutCountdown()", 7*1000);
 
 });
 
 function fadeoutCountdown()  {
     $('body').fadeOut(3000);
-    setTimeout("fadeinTimecapsule()", 3*1000);
+    setTimeout("fadeinTimecapsule()", 4*1000);
 }
 
 function fadeinTimecapsule() {
     $('body').show();
     $('#countdown_dashboard').stopCountDown();
+    $("#countdown_dashboard").hide();
+    $("#page-header").hide();
+    $("#timecupsule").show();
 }

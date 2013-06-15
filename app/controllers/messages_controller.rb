@@ -82,7 +82,8 @@ class MessagesController < ApplicationController
   end
 
   def notice
-    @messages = []
+    @messages = Message.unsent_search   
+
     respond_to do |format|
       format.html { render action: "index" }
     end

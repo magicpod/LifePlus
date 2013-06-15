@@ -1,6 +1,8 @@
 <%- model_class = Message -%>
+<div class="container">
 <div id="page-header">
-   <h3><%= @message.notice_date %>まであと...</h3>
+   <h3>タイムカプセルを開く時がきました。</h3>
+   <h3><%= @message.notice_date.strftime("%Y年%m月%d日") %>まであと...</h3>
 </div>
 <div id="container">
   <div id="countdown_dashboard">
@@ -16,9 +18,9 @@
     <div class="span6">
       <blockquote>
         <p><h2><%= @message.content %></h2></p>
-        <small><%= @message.notice_date %>ツイート <cite>https://twitter.com//cite></small>
+        <small><%= @message.notice_date.to_s %>ツイート <cite>https://twitter.com//cite></small>
       </blockquote>
       </div>
   </div>
 </div>
-
+</div>

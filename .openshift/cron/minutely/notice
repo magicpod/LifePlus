@@ -1,4 +1,5 @@
 #!/bin/bash
 
+date >> ${OPENSHIFT_RUBY_LOG_DIR}/notice_start.log
 curl https://lifeplus-24contest.rhcloud.com/messages/notice
-date >> ${OPENSHIFT_RUBY_LOG_DIR}/notice.log
+date >> ${OPENSHIFT_RUBY_LOG_DIR}/notice_end.log

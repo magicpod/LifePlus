@@ -45,6 +45,7 @@ class MessagesController < ApplicationController
   # POST /messages.json
   def create
     @message = Message.new(params[:message])
+    @message.user_id = current_user.id
 
     respond_to do |format|
       if @message.save
@@ -117,7 +118,8 @@ class MessagesController < ApplicationController
       content = message.created_at.strftime("%Y年%m月%d日 %H:%M:%S")
       content << "\r\n"
       content << "タイムカプセルを掘り起こす時が来ました。"
-      Twitter.update( content )
+
+      Twitter.direct_message_create(message.user.uid, content )
 
       Twitter.configure do |config|
         config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
@@ -125,6 +127,9 @@ class MessagesController < ApplicationController
         config.oauth_token = message.user.access_token
         config.oauth_token_secret = message.user.access_secret
       end
+
+      message.noticed = true
+      message.save(message)
     end
 
   end

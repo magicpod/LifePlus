@@ -80,4 +80,12 @@ class MessagesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def notice
+    @messages = []
+    respond_to do |format|
+      format.html { render action: "index" }
+    end
+  end
+
 end

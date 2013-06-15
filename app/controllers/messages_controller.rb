@@ -139,26 +139,30 @@ class MessagesController < ApplicationController
     #   config.oauth_token_secret = 'TlvxDGu1FuVvJiiGuw0JYdyA6NAwK24WUgs7A7zrSo'
     # end
 
-    users = User.all
-    users.each do |user|
-
+    twitter_setup = lambda { |user|
       Twitter.configure do |config|
         config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
         config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
         config.oauth_token = user.access_token
         config.oauth_token_secret = user.access_secret
       end
+    }
 
+    users = User.all
+    users.each do |user|
+
+      twitter_setup.call(user)
       maxTweet_id = Message.maxTweet_id(user.id)
-
+ 
       options = {"since_id" => maxTweet_id.to_s, "include_entities" => true}
-      puts options.inspect
-      puts user.inspect
+      Rails.logger.info( options.inspect )
+      Rails.logger.info( user.id.inspect )
+      Rails.logger.info( user.name.inspect )
       Twitter.user_timeline( user.name, options ).each do |res|
-        puts res.text
+        Rails.logger.info( res.id.inspect )
         if res.text =~ /#lp24c/ then
-          puts 'タイムカプセルを登録'
-          Message.create( :user_id => user.id, :tweet_id => res.id, :content => res.text, :notice_date => DateTime.now + 1.minutes, :noticed => true )
+          Rails.logger.info( 'タイムカプセルを登録' )
+          Message.create( :user_id => user.id, :tweet_id => res.id, :content => res.text, :notice_date => DateTime.now + 1.minutes, :noticed => false )
         end
       end
     end

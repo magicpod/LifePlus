@@ -103,6 +103,29 @@ class MessagesController < ApplicationController
 
   private
 
+  def tweet
+
+    @messages.each do |message|
+
+      Twitter.configure do |config|
+        config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
+        config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
+        config.oauth_token = message.user.access_token
+        config.oauth_token_secret = message.user.access_secret
+      end
+
+      content = message.created_at.now.strftime("%Y年%m月%d日 %H:%M:%S")
+      content << "\r\n"
+      content << "タイムカプセルを掘り起こす時が来ました。"
+      Twitter.direct_message_create( message.user.name, content )
+
+      message.noticed = true
+      message.save(message)
+
+    end
+
+  end
+
   def tweet_pull
 
     Twitter.configure do |config|
@@ -116,7 +139,7 @@ class MessagesController < ApplicationController
     users.each do |user|
       options = {"since_id" => 1, "include_entities" => true}
       Twitter.user_timeline( user.name, options ).each do |res|
-        # puts res.inspect
+        # puts res.text
         # Message.create( :user_id => user.id, :content => res.text, :notice_date => DateTime.now, :noticed => true )
         # break
       end

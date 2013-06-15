@@ -83,9 +83,17 @@ class MessagesController < ApplicationController
 
   def notice
     @messages = []
+    tweet
     respond_to do |format|
       format.html { render action: "index" }
     end
+  end
+
+
+  private
+
+  def tweet
+    
   end
 
 end

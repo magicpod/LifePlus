@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   # attr_accessible :email, :password, :password_confirmation, :remember_me
   # # attr_accessible :title, :body
-  attr_accessible :name, :password, :uid, :provider
+  attr_accessible :name, :password, :uid, :provider, :access_token, :access_secret
 
   def self.new_with_session(params, session)
     super.tap do |user|
@@ -25,8 +25,9 @@ class User < ActiveRecord::Base
       user = User.create(name:auth.info.nickname,
                           provider:auth.provider,
                           uid:auth.uid,
-#                          email:auth.extra.user_hash.email, #色々頑張りましたがtwitterではemail取得できません
-                          password:Devise.friendly_token[0,20]
+                          password:Devise.friendly_token[0,20],
+                          access_token:auth['credentials']['token'],
+                          access_secret:auth['credentials']['secret']
                           )
     end
     user

@@ -13,6 +13,7 @@ RailsApp::Application.routes.draw do
   resources :messages do
     collection do
       get 'notice'
+      get 'pull'
     end
   end
 

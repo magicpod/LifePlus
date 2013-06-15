@@ -1,3 +1,7 @@
+# encoding: utf-8
+
+# coding: utf-8
+
 class MessagesController < ApplicationController
   # GET /messages
   # GET /messages.json
@@ -84,9 +88,62 @@ class MessagesController < ApplicationController
   def notice
     @messages = Message.unsent_search   
 
+    tweet
+    
     respond_to do |format|
       format.html { render action: "index" }
     end
+  end
+
+  def pull
+    tweet_pull
+    respond_to do |format|
+      format.html { render action: "index" }
+    end
+  end
+
+  private
+
+  def tweet
+
+    Twitter.configure do |config|
+      config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
+      config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
+      config.oauth_token = '1518978194-olqwtfG285noLBpq60Vp4S3AhD2CFkJ6fQ1Y3Ow'
+      config.oauth_token_secret = 'TlvxDGu1FuVvJiiGuw0JYdyA6NAwK24WUgs7A7zrSo'
+    end
+
+    Twitter.update( DateTime.now.strftime("%Y年%m月%d日 %H:%M:%S") + "\r\n" + "TESTです。" )
+
+    Twitter.configure do |config|
+      config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
+      config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
+      config.oauth_token = User.where(:name => 'fukudevlove').first.access_token
+      config.oauth_token_secret = User.where(:name => 'fukudevlove').first.access_secret
+    end
+
+  end
+
+  def tweet_pull
+
+    Twitter.configure do |config|
+      config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
+      config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
+      config.oauth_token = '1518978194-olqwtfG285noLBpq60Vp4S3AhD2CFkJ6fQ1Y3Ow'
+      config.oauth_token_secret = 'TlvxDGu1FuVvJiiGuw0JYdyA6NAwK24WUgs7A7zrSo'
+    end
+
+    users = User.where(:name => 'fukudevlove')
+    users.each do |user|
+      options = {"count" => 10}
+      Twitter.user_timeline( user.name, {} ).each do |res|
+        Message.create( :user_id => user.id, :content => res.text, :notice_date => DateTime.now, :noticed => true )
+        break
+      end
+    end
+
+    @messages = Message.all
+
   end
 
 end

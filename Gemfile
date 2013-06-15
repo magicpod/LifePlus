@@ -10,6 +10,11 @@ gem 'sqlite3'
 
 gem 'devise'
 gem 'omniauth-twitter'
+gem 'twitter'
+
+# OAuth-token
+gem 'oauth'
+gem 'get-twitter-oauth-token'
 
 group :production do
   gem 'mysql2'

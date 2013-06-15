@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class MessagesController < ApplicationController
   # GET /messages
   # GET /messages.json
@@ -89,11 +91,26 @@ class MessagesController < ApplicationController
     end
   end
 
-
   private
 
   def tweet
-    
+
+    Twitter.configure do |config|
+      config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
+      config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
+      config.oauth_token = '1518978194-olqwtfG285noLBpq60Vp4S3AhD2CFkJ6fQ1Y3Ow'
+      config.oauth_token_secret = 'TlvxDGu1FuVvJiiGuw0JYdyA6NAwK24WUgs7A7zrSo'
+    end
+
+    Twitter.update("TEST5です。")
+
+    Twitter.configure do |config|
+      config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
+      config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
+      config.oauth_token = User.find(:first).access_token
+      config.oauth_token_secret = User.find(:first).access_secret
+    end
+
   end
 
 end

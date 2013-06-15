@@ -139,16 +139,19 @@ class MessagesController < ApplicationController
     #   config.oauth_token_secret = 'TlvxDGu1FuVvJiiGuw0JYdyA6NAwK24WUgs7A7zrSo'
     # end
 
-    users = User.all
-    users.each do |user|
-
+    twitter_setup = lambda { |user|
       Twitter.configure do |config|
         config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
         config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
         config.oauth_token = user.access_token
         config.oauth_token_secret = user.access_secret
       end
+    }
 
+    users = User.all
+    users.each do |user|
+
+      twitter_setup.call(user)
       maxTweet_id = Message.maxTweet_id(user.id)
  
       options = {"since_id" => maxTweet_id.to_s, "include_entities" => true}

@@ -9,8 +9,7 @@ class Message < ActiveRecord::Base
   	message = Message.where(:user_id => user_id).order('tweet_id desc').first
 
   	return 1 unless message
-  	return message.tweet_id + 1 if message.noticed
-  	message.tweet_id
+  	message.tweet_id + 1
   end
   
 end

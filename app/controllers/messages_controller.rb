@@ -109,19 +109,19 @@ class MessagesController < ApplicationController
 
     @messages.each do |message|
 
-      Twitter.configure do |config|
-        config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
-        config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
-        config.oauth_token = message.user.access_token
-        config.oauth_token_secret = message.user.access_secret
-      end
+      # Twitter.configure do |config|
+      #   config.consumer_key = 'galtGPSTwyL8gvnMJlzbg'
+      #   config.consumer_secret = 'osmPS76ML9mkLut5O2Ybz6q9QigvAOOZYSZzNGyN4'
+      #   config.oauth_token = message.user.access_token
+      #   config.oauth_token_secret = message.user.access_secret
+      # end
 
-      content = message.created_at.strftime("%Y年%m月%d日 %H:%M:%S")
-      content << "\r\n"
-      content << "タイムカプセルを掘り起こす時が来ました。"
-      content << "\r\n"
-      content << url_for( message_url(message.id) )
-      Twitter.direct_message_create( message.user.name, content )
+      # content = message.created_at.strftime("%Y年%m月%d日 %H:%M:%S")
+      # content << "\r\n"
+      # content << "タイムカプセルを掘り起こす時が来ました。"
+      # content << "\r\n"
+      # content << url_for( message_url(message.id) )
+      # Twitter.direct_message_create( message.user.name, content )
 
       message.noticed = true
       message.save(message)

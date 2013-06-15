@@ -2,7 +2,7 @@ class Message < ActiveRecord::Base
   attr_accessible :content, :notice_date, :noticed, :user_id, :tweet_id
   belongs_to :user
   
-  scope :unsent_search, where('notice_date < ? and noticed = ?', DateTime.now , false)
+  scope :unsent_search, where(:noticed =>false)
 
 
   def self.maxTweet_id (user_id)

@@ -1,3 +1,4 @@
 #!/bin/bash
 
 curl https://lifeplus-24contest.rhcloud.com/messages/notice
+date >> ${OPENSHIFT_RUBY_LOG_DIR}/notice.log

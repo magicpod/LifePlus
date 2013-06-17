@@ -57,6 +57,7 @@ GEM
       multipart-post (~> 1.1)
     get-twitter-oauth-token (1.0.1)
       oauth
+    google-analytics-rails (0.0.4)
     hashie (2.0.5)
     hike (1.2.3)
     i18n (0.6.1)
@@ -178,6 +179,7 @@ DEPENDENCIES
   devise
   factory_girl_rails
   get-twitter-oauth-token
+  google-analytics-rails
   jquery-rails
   less-rails-bootstrap
   minitest

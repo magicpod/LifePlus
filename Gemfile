@@ -64,3 +64,6 @@ gem 'minitest'
 gem 'twitter-bootstrap-rails'
 gem 'less-rails-bootstrap'
 gem 'therubyracer'
+
+# Google Analytics
+gem 'google-analytics-rails'

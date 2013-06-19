@@ -160,7 +160,7 @@ class MessagesController < ApplicationController
       Rails.logger.info( user.name.inspect )
       Twitter.user_timeline( user.name, options ).each do |res|
         Rails.logger.info( res.id.inspect )
-        if res.text =~ /#lp24c/ then
+        if res.text =~ /#lifeplus24/ then
           Rails.logger.info( 'タイムカプセルを登録' )
           Message.create( :user_id => user.id, :tweet_id => res.id, :content => res.text, :notice_date => DateTime.now, :noticed => false )
         end
